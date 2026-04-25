@@ -1,0 +1,25 @@
+@import url('https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "LXGW WenKai", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "LXGW WenKai", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+html.dark {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+html.dark img,
+html.dark video,
+html.dark iframe {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+html {
+  transition: filter 0.5s ease;
+}
+
+body {
+  font-family: "LXGW WenKai", sans-serif;
+}

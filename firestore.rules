@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Primitives
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isSignedIn() { return request.auth != null && request.auth.uid != null; }
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+
+    // Validation Blueprint for User
+    function isValidUser(data) {
+      return data.keys().hasAll(['masteryPercentage', 'updatedAt']) &&
+             data.keys().size() == 2 &&
+             data.masteryPercentage is number &&
+             data.masteryPercentage >= 0 &&
+             data.masteryPercentage <= 100 &&
+             data.updatedAt == request.time;
+    }
+
+    // Collection: users
+    match /users/{userId} {
+      allow get: if isSignedIn() && isValidId(userId) && request.auth.uid == userId;
+
+      allow create: if isSignedIn() && isValidId(userId) && request.auth.uid == userId && isValidUser(incoming());
+
+      allow update: if isSignedIn() && isValidId(userId) && request.auth.uid == userId &&
+        isValidUser(incoming()) &&
+        (
+          (incoming().diff(existing()).affectedKeys().hasOnly(['masteryPercentage', 'updatedAt']))
+        );
+    }
+  }
+}

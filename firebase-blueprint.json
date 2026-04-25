@@ -1,0 +1,29 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Represents a user's progress in the learning app.",
+      "type": "object",
+      "properties": {
+        "masteryPercentage": {
+          "type": "number",
+          "description": "User's mastery percentage, from 0 to 100."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the user progress was last updated."
+        }
+      },
+      "required": ["masteryPercentage", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/User"
+      },
+      "description": "User documents storing progress."
+    }
+  }
+}

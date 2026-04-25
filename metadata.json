@@ -1,0 +1,6 @@
+{
+  "name": "Remix: IATF 16949 Learning Tool",
+  "description": "An interactive tool to help users study and memorize the clauses of the IATF 16949 Automotive Quality Management System standard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
